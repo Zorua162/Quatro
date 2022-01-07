@@ -10,7 +10,8 @@ import json
 from logging.handlers import RotatingFileHandler
 from icecream import ic
 
-from game_objects import Board, Display
+from game_objects import Board
+from display import Display
 
 
 class Client:
