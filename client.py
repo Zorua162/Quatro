@@ -12,6 +12,7 @@ from icecream import ic
 
 from game_objects import Board
 from display import Display
+from server import get_other, parse_loc
 
 
 class Client:
@@ -423,13 +424,6 @@ class OnlinePlay(LocalPlay):
             print("Sucessfully connected")
 
 
-def get_other(player):
-    """Get the other players number, 1 return 2, 2 return 1"""
-    if player in (1, "1"):
-        return 2
-    return 1
-
-
 def setup_logging():
     """Logging for server"""
     log = logging.getLogger('client')
@@ -452,11 +446,6 @@ def setup_logging():
     log.addHandler(stream_handler)
     # Also want to log to console so add a stream handler too
     return log
-
-
-def parse_loc(loc):
-    """Parse from string to tuple"""
-    return tuple(map(int, loc[1:-1].split(", ")))
 
 
 if __name__ == '__main__':

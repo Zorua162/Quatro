@@ -10,7 +10,6 @@ from logging.handlers import RotatingFileHandler
 from icecream import ic
 
 from game_objects import Board
-from client import get_other, parse_loc
 
 
 class ConnectionState(enum.Enum):
@@ -311,6 +310,18 @@ def setup_logging():
     log.addHandler(stream_handler)
     # Also want to log to console so add a stream handler too
     return log
+
+
+def parse_loc(loc):
+    """Parse from string to tuple"""
+    return tuple(map(int, loc[1:-1].split(", ")))
+
+
+def get_other(player):
+    """Get the other players number, 1 return 2, 2 return 1"""
+    if player in (1, "1"):
+        return 2
+    return 1
 
 
 if __name__ == '__main__':
