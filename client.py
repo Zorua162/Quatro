@@ -6,6 +6,7 @@ import random
 import socket
 import os  # For logging
 import logging
+import json
 from logging.handlers import RotatingFileHandler
 from icecream import ic
 
@@ -208,8 +209,10 @@ class OnlinePlay(LocalPlay):
     def __init__(self, client):
         super().__init__(client)
         self.client_socket = None
-        self.conn_vars = {"host": socket.gethostname(),
-                          "port": 5000,
+        with open("config.json", "r") as f:
+            config = json.load(f)
+        self.conn_vars = {"host": config["host"],
+                          "port": int(config["port"]),
                           "connected": False}
 
     def play_game(self):
@@ -403,10 +406,10 @@ class OnlinePlay(LocalPlay):
         """Connect to the host"""
         self.client_socket = socket.socket()
         # self.client_socket.setblocking(False)
-        self.client_socket.settimeout(0.1)
         host = self.conn_vars["host"]
         port = self.conn_vars["port"]
         try:
+            ic(host, port)
             self.client_socket.connect((host, port))
             self.client_socket.send("client".encode())
         except ConnectionRefusedError:
@@ -414,6 +417,8 @@ class OnlinePlay(LocalPlay):
             print("Connection refused")
         else:
             self.conn_vars["connected"] = True
+            # Set timeout to a short time to allow for waiting
+            self.client_socket.settimeout(0.1)
             print("Sucessfully connected")
 
 

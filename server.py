@@ -5,6 +5,7 @@ import enum
 import random
 import threading
 import logging
+import json
 from logging.handlers import RotatingFileHandler
 from icecream import ic
 
@@ -208,8 +209,13 @@ class ServerProgram:
         self.logger = setup_logging()
 
         # get the hostname
-        host = socket.gethostname()
-        port = 5000  # initiate port no above 1024
+        # host = socket.gethostname()
+        # host = "localhost"
+        # port = 5000  # initiate port no above 1024
+        with open("config.json", "r") as f:
+            config = json.load(f)
+            host = config["host"]
+            port = int(config["port"])
         conn_list = []
         self.game_dict = {}
         self.data = ""
